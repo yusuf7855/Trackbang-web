@@ -8,20 +8,19 @@ import {
     AppBar,
     Toolbar,
     Stack,
-    Paper,
     Grid,
     Card,
-    CardContent
+    CardContent,
+    useTheme,
+    useMediaQuery
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { keyframes } from '@mui/system';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import HomeIcon from '@mui/icons-material/Home';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import PersonIcon from '@mui/icons-material/Person';
-import './FreePage.css';
 
-// Styled components for animations and custom styling
+// Animation for music icon
 const pulse = keyframes`
     0% {
         transform: scale(0.95);
@@ -33,150 +32,29 @@ const pulse = keyframes`
     }
 `;
 
-const AnimatedMusicIcon = styled(MusicNoteIcon)({
-    fontSize: '5rem',
-    color: '#fff',
-    animation: `${pulse} 1s ease-in-out infinite alternate`,
-});
-
-const MainNavbar = styled(AppBar)({
-    backgroundColor: '#000',
-    borderBottom: '1px solid #333',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-});
-
-const NavButton = styled(Button)({
-    color: '#fff',
-    textTransform: 'none',
-    fontSize: '1rem',
-    fontWeight: 500,
-    margin: '0 10px',
-    '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    },
-});
-
-const SpotifySection = styled(Box)({
-    backgroundColor: '#0f0f0f',
-    borderRadius: '20px',
-    padding: '40px',
-    margin: '40px 0',
-});
-
-const SpotifyGrid = styled(Grid)({
-    gap: '20px',
-});
-
-const SpotifyCard = styled(Card)({
-    backgroundColor: 'transparent',
-    boxShadow: 'none',
-    '& iframe': {
-        borderRadius: '12px',
-        width: '100%',
-        border: 'none',
-    },
-});
-
-const HeroSection = styled(Box)({
-    background: 'linear-gradient(135deg, #1a1a1a 0%, #000 100%)',
-    padding: '80px 0',
-    textAlign: 'center',
-});
-
-const CtaSection = styled(Box)({
-    backgroundColor: '#1a1a1a',
-    padding: '60px 0',
-    textAlign: 'center',
-});
-
-const RegisterButton = styled(Button)(({ theme }) => ({
-    backgroundColor: '#fff',
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: '1.1rem',
-    borderRadius: '30px',
-    padding: '12px 32px',
-    textTransform: 'none',
-    boxShadow: '0 4px 15px rgba(255, 255, 255, 0.3)',
-    margin: '0 8px',
-    minWidth: '180px',
-    '&:hover': {
-        backgroundColor: '#f0f0f0',
-        transform: 'translateY(-2px)',
-        boxShadow: '0 6px 20px rgba(255, 255, 255, 0.4)',
-    },
-    [theme.breakpoints.down('lg')]: {
-        fontSize: '1rem',
-        padding: '10px 24px',
-        minWidth: '160px',
-        margin: '0 6px',
-    },
-    [theme.breakpoints.up('xl')]: {
-        fontSize: '1.2rem',
-        padding: '16px 40px',
-        minWidth: '200px',
-    },
-}));
-
-const LoginButton = styled(Button)(({ theme }) => ({
-    backgroundColor: 'transparent',
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: '1.1rem',
-    borderRadius: '30px',
-    padding: '12px 32px',
-    textTransform: 'none',
-    border: '2px solid #fff',
-    margin: '0 8px',
-    minWidth: '180px',
-    '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        transform: 'translateY(-2px)',
-    },
-    [theme.breakpoints.down('lg')]: {
-        fontSize: '1rem',
-        padding: '10px 24px',
-        minWidth: '160px',
-        margin: '0 6px',
-    },
-    [theme.breakpoints.up('xl')]: {
-        fontSize: '1.2rem',
-        padding: '16px 40px',
-        minWidth: '200px',
-    },
-}));
-
-const Footer = styled(Box)({
-    backgroundColor: '#000',
-    borderTop: '1px solid #333',
-    padding: '40px 0',
-    marginTop: 'auto',
-});
-
 const FreePage = () => {
     const [allLoaded, setAllLoaded] = useState(false);
     const navigate = useNavigate();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
 
     const tracks = [
-        { id: "4QHKR48C18rwlpSYW6rH7p" },
-        { id: "3pPe4F2kFRp9ipARwxFmQr" },
-        { id: "2MFs3zQcS0MuIjuyyG85fV" },
-        { id: "0RMmME0OhJcrWtnb2kZMHL" },
-        { id: "70sMnVjOXAbZCH5USpGuOG" },
+        { id: "4QHKR48C18rwlpSYW6rH7p", title: "Blinding Lights - The Weeknd" },
+        { id: "3pPe4F2kFRp9ipARwxFmQr", title: "Shape of You - Ed Sheeran" },
+        { id: "2MFs3zQcS0MuIjuyyG85fV", title: "Someone Like You - Adele" },
+        { id: "0RMmME0OhJcrWtnb2kZMHL", title: "Watermelon Sugar - Harry Styles" },
+        { id: "70sMnVjOXAbZCH5USpGuOG", title: "Bad Guy - Billie Eilish" },
+        { id: "1BxfuPKGuaTgP7aM0Bbdwr", title: "Shallow - Lady Gaga & Bradley Cooper" },
+        { id: "7qiZfU4dY1lWllzX7mPBI3", title: "Stay - The Kid LAROI & Justin Bieber" },
+        { id: "11dFghVXANMlKmJXsNCbNl", title: "As It Was - Harry Styles" },
     ];
 
-    // Faster loading
     useEffect(() => {
-        console.log('FreePage mounted, starting timer...');
         const timer = setTimeout(() => {
-            console.log('Timer finished, showing content');
             setAllLoaded(true);
         }, 800);
-
-        return () => {
-            console.log('Cleaning up timer');
-            clearTimeout(timer);
-        };
+        return () => clearTimeout(timer);
     }, []);
 
     const handleRegister = () => {
@@ -187,288 +65,540 @@ const FreePage = () => {
         navigate('/login');
     };
 
-    const SpotifyEmbed = ({ trackId }) => {
-        console.log('Rendering SpotifyEmbed for:', trackId);
+    // Custom Container component with responsive padding
+    const ResponsiveContainer = ({ children, ...props }) => (
+        <Container
+            maxWidth={false}
+            sx={{
+                width: '100%',
+                maxWidth: {
+                    xs: '100%',
+                    sm: '100%',
+                    md: '1200px',
+                    lg: '1400px',
+                    xl: '1600px',
+                },
+                px: {
+                    xs: 2,
+                    sm: 3,
+                    md: 4,
+                    lg: 5,
+                    xl: 6,
+                },
+                mx: 'auto',
+                ...props.sx
+            }}
+            {...props}
+        >
+            {children}
+        </Container>
+    );
 
+    const SpotifyEmbed = ({ trackId }) => {
         const spotifyUrl = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&autoplay=0&hide_cover=0`;
 
         return (
-            <SpotifyCard>
+            <Card
+                sx={{
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    width: '100%',
+                    mx: 'auto',
+                }}
+            >
                 <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-                    <iframe
+                    <Box
+                        component="iframe"
                         src={spotifyUrl}
-                        width="100%"
-                        height="152"
+                        sx={{
+                            width: '100%',
+                            height: 152,
+                            border: 'none',
+                            borderRadius: '12px',
+                        }}
                         frameBorder="0"
                         allowtransparency="true"
                         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                         loading="lazy"
-                        style={{
-                            borderRadius: '12px',
-                            minHeight: '152px',
-                        }}
                     />
                 </CardContent>
-            </SpotifyCard>
+            </Card>
         );
     };
 
-    const LoadingContent = () => {
-        console.log('Rendering LoadingContent');
-        return (
-            <HeroSection>
-                <Container maxWidth="lg">
-                    <Box sx={{ py: 10 }}>
-                        <AnimatedMusicIcon />
-                        <Typography
-                            variant="h4"
-                            sx={{
-                                color: '#fff',
-                                fontWeight: 600,
-                                mt: 3,
-                            }}
-                        >
-                            Müzik Yükleniyor...
-                        </Typography>
-                        <Typography
-                            variant="h6"
-                            sx={{
-                                color: '#ccc',
-                                mt: 2,
-                            }}
-                        >
-                            En sevdiğiniz şarkılar hazırlanıyor
-                        </Typography>
-                    </Box>
-                </Container>
-            </HeroSection>
-        );
-    };
+    const LoadingContent = () => (
+        <Box
+            sx={{
+                background: 'linear-gradient(135deg, #1a1a1a 0%, #000 100%)',
+                py: 10,
+                textAlign: 'center',
+                width: '100%',
+            }}
+        >
+            <ResponsiveContainer>
+                <MusicNoteIcon
+                    sx={{
+                        fontSize: { xs: '4rem', sm: '5rem' },
+                        color: '#fff',
+                        animation: `${pulse} 1s ease-in-out infinite alternate`,
+                    }}
+                />
+                <Typography
+                    variant="h4"
+                    sx={{
+                        color: '#fff',
+                        fontWeight: 600,
+                        mt: 3,
+                        fontSize: {
+                            xs: '1.5rem',
+                            sm: '2rem',
+                            md: '2.5rem',
+                            lg: '3rem'
+                        }
+                    }}
+                >
+                    Müzik Yükleniyor...
+                </Typography>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        color: '#ccc',
+                        mt: 2,
+                        fontSize: {
+                            xs: '0.9rem',
+                            sm: '1rem',
+                            md: '1.1rem',
+                            lg: '1.25rem'
+                        }
+                    }}
+                >
+                    En sevdiğiniz şarkılar hazırlanıyor
+                </Typography>
+            </ResponsiveContainer>
+        </Box>
+    );
 
-    const LoadedContent = () => {
-        console.log('Rendering LoadedContent');
-        return (
-            <>
-                {/* Hero Section */}
-                <HeroSection>
-                    <Box sx={{
-                        width: '100%',
-                        px: { lg: 3, xl: 4, xxl: 6 },
-                        maxWidth: { lg: '1400px', xl: '1600px', xxl: 'none' },
-                        mx: 'auto'
-                    }}>
-                        <Typography
-                            variant="h2"
-                            sx={{
-                                color: '#fff',
-                                fontWeight: 700,
-                                mb: 3,
-                                fontSize: {
-                                    lg: '3rem',
-                                    xl: '4rem',
-                                    xxl: '4.5rem'
-                                }
-                            }}
-                        >
-                            Ücretsiz Müzik Deneyimi
-                        </Typography>
-                        <Typography
-                            variant="h5"
-                            sx={{
-                                color: '#ccc',
-                                mb: 4,
-                                maxWidth: { lg: '600px', xl: '800px', xxl: '1000px' },
-                                mx: 'auto',
-                                lineHeight: 1.6,
-                                fontSize: {
-                                    lg: '1.25rem',
-                                    xl: '1.5rem',
-                                    xxl: '1.75rem'
-                                }
-                            }}
-                        >
-                            En popüler şarkıları dinleyin ve premium deneyim için üye olun
-                        </Typography>
-                        <Box sx={{ mt: 4 }}>
-                            <RegisterButton onClick={handleRegister}>
-                                Hemen Kayıt Ol - 10€/ay
-                            </RegisterButton>
-                            <LoginButton onClick={handleLogin}>
-                                Giriş Yap
-                            </LoginButton>
-                        </Box>
-                    </Box>
-                </HeroSection>
-
-                {/* Spotify Tracks Section */}
-                <Box sx={{
+    const LoadedContent = () => (
+        <>
+            {/* Hero Section */}
+            <Box
+                sx={{
+                    background: 'linear-gradient(135deg, #1a1a1a 0%, #000 100%)',
+                    py: { xs: 8, sm: 10, md: 12 },
+                    textAlign: 'center',
                     width: '100%',
-                    py: { lg: 6, xl: 8, xxl: 10 },
-                    px: { lg: 3, xl: 4, xxl: 6 }
-                }}>
-                    <Box sx={{
-                        maxWidth: { lg: '1400px', xl: '1600px', xxl: 'none' },
-                        mx: 'auto'
-                    }}>
-                        <Typography
-                            variant="h3"
+                }}
+            >
+                <ResponsiveContainer>
+                    <Typography
+                        variant="h1"
+                        sx={{
+                            color: '#fff',
+                            fontWeight: 700,
+                            mb: 3,
+                            fontSize: {
+                                xs: '2rem',
+                                sm: '2.5rem',
+                                md: '3rem',
+                                lg: '3.5rem',
+                                xl: '4rem'
+                            }
+                        }}
+                    >
+                        Ücretsiz Müzik Deneyimi
+                    </Typography>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            color: '#ccc',
+                            mb: 4,
+                            mx: 'auto',
+                            lineHeight: 1.6,
+                            fontSize: {
+                                xs: '1rem',
+                                sm: '1.1rem',
+                                md: '1.25rem',
+                                lg: '1.4rem',
+                                xl: '1.5rem'
+                            },
+                            maxWidth: {
+                                xs: '100%',
+                                sm: '500px',
+                                md: '600px',
+                                lg: '700px',
+                                xl: '800px'
+                            }
+                        }}
+                    >
+                        En popüler şarkıları dinleyin ve premium deneyim için üye olun
+                    </Typography>
+                    <Stack
+                        direction={{ xs: 'column', sm: 'row' }}
+                        spacing={2}
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{ mt: 4 }}
+                    >
+                        <Button
+                            variant="contained"
+                            onClick={handleRegister}
+                            sx={{
+                                backgroundColor: '#fff',
+                                color: '#000',
+                                fontWeight: 'bold',
+                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                px: { xs: 3, sm: 4 },
+                                py: { xs: 1.5, sm: 1.5 },
+                                minWidth: { xs: '250px', sm: '200px' },
+                                borderRadius: '30px',
+                                boxShadow: '0 4px 15px rgba(255, 255, 255, 0.3)',
+                                '&:hover': {
+                                    backgroundColor: '#f0f0f0',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 6px 20px rgba(255, 255, 255, 0.4)',
+                                },
+                            }}
+                        >
+                            Hemen Kayıt Ol - 10€/ay
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={handleLogin}
                             sx={{
                                 color: '#fff',
-                                fontWeight: 600,
-                                textAlign: 'center',
-                                mb: 2,
-                                fontSize: {
-                                    lg: '2.5rem',
-                                    xl: '3rem',
-                                    xxl: '3.5rem'
-                                }
+                                borderColor: '#fff',
+                                fontWeight: 'bold',
+                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                px: { xs: 3, sm: 4 },
+                                py: { xs: 1.5, sm: 1.5 },
+                                minWidth: { xs: '250px', sm: '180px' },
+                                borderRadius: '30px',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    borderColor: '#fff',
+                                    transform: 'translateY(-2px)',
+                                },
                             }}
                         >
-                            Popüler Şarkılar
-                        </Typography>
-                        <Typography
-                            variant="h6"
-                            sx={{
-                                color: '#ccc',
-                                textAlign: 'center',
-                                mb: 5,
-                                fontSize: {
-                                    lg: '1.1rem',
-                                    xl: '1.3rem',
-                                    xxl: '1.5rem'
-                                }
-                            }}
-                        >
-                            Ücretsiz olarak dinleyebileceğiniz şarkılar
-                        </Typography>
+                            Giriş Yap
+                        </Button>
+                    </Stack>
+                </ResponsiveContainer>
+            </Box>
 
-                        <SpotifySection>
-                            <Grid container spacing={{ lg: 3, xl: 4, xxl: 5 }}>
-                                {tracks.map((track, index) => (
-                                    <Grid item xs={12} lg={6} xl={4} xxl={3} key={track.id}>
-                                        <SpotifyEmbed trackId={track.id} />
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </SpotifySection>
+            {/* Spotify Tracks Section */}
+            <Box sx={{ py: { xs: 6, sm: 8, md: 10 }, width: '100%' }}>
+                <ResponsiveContainer>
+                    <Typography
+                        variant="h2"
+                        sx={{
+                            color: '#fff',
+                            fontWeight: 600,
+                            textAlign: 'center',
+                            mb: 2,
+                            fontSize: {
+                                xs: '1.75rem',
+                                sm: '2rem',
+                                md: '2.25rem',
+                                lg: '2.5rem',
+                                xl: '3rem'
+                            }
+                        }}
+                    >
+                        Popüler Şarkılar
+                    </Typography>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            color: '#ccc',
+                            textAlign: 'center',
+                            mb: 5,
+                            fontSize: {
+                                xs: '0.9rem',
+                                sm: '1rem',
+                                md: '1.1rem',
+                                lg: '1.2rem',
+                                xl: '1.3rem'
+                            }
+                        }}
+                    >
+                        8 popüler şarkıyı ücretsiz dinleyin - Premium ile sınırsız müzik
+                    </Typography>
+
+                    <Box
+                        sx={{
+                            backgroundColor: '#0f0f0f',
+                            borderRadius: '20px',
+                            p: { xs: 3, sm: 4, md: 5 },
+                            mt: 4,
+                            position: 'relative',
+                            '&::before': {
+                                content: '""',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                background: 'linear-gradient(135deg, rgba(30,30,30,0.8) 0%, rgba(15,15,15,0.9) 100%)',
+                                borderRadius: '20px',
+                                zIndex: 0,
+                            },
+                            '& > *': {
+                                position: 'relative',
+                                zIndex: 1,
+                            }
+                        }}
+                    >
+                        <Grid
+                            container
+                            spacing={{ xs: 1, sm: 1.5, md: 2 }}
+                            justifyContent="center"
+                        >
+                            {tracks.map((track, index) => (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    md={6}
+                                    lg={3}
+                                    xl={3}
+                                    key={track.id}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <SpotifyEmbed trackId={track.id} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
-                </Box>
+                </ResponsiveContainer>
+            </Box>
 
-                {/* CTA Section */}
-                <CtaSection>
-                    <Box sx={{
-                        width: '100%',
-                        px: { lg: 3, xl: 4, xxl: 6 },
-                        maxWidth: { lg: '1400px', xl: '1600px', xxl: 'none' },
-                        mx: 'auto'
-                    }}>
-                        <Typography
-                            variant="h3"
+            {/* CTA Section */}
+            <Box
+                sx={{
+                    backgroundColor: '#1a1a1a',
+                    py: { xs: 8, sm: 10 },
+                    textAlign: 'center',
+                    width: '100%',
+                }}
+            >
+                <ResponsiveContainer>
+                    <Typography
+                        variant="h2"
+                        sx={{
+                            color: '#fff',
+                            fontWeight: 600,
+                            mb: 3,
+                            fontSize: {
+                                xs: '1.75rem',
+                                sm: '2rem',
+                                md: '2.25rem',
+                                lg: '2.5rem',
+                                xl: '3rem'
+                            }
+                        }}
+                    >
+                        Tüm İçeriklere Erişin
+                    </Typography>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            color: '#ccc',
+                            mb: 4,
+                            lineHeight: 1.6,
+                            mx: 'auto',
+                            fontSize: {
+                                xs: '0.9rem',
+                                sm: '1rem',
+                                md: '1.1rem',
+                                lg: '1.2rem',
+                                xl: '1.3rem'
+                            },
+                            maxWidth: {
+                                xs: '100%',
+                                sm: '500px',
+                                md: '700px',
+                                lg: '800px',
+                                xl: '900px'
+                            }
+                        }}
+                    >
+                        Sınırsız müzik, playlist oluşturma, offline dinleme ve daha fazlası için premium üyelik alın
+                    </Typography>
+                    <Stack
+                        direction={{ xs: 'column', sm: 'row' }}
+                        spacing={2}
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Button
+                            variant="contained"
+                            onClick={handleRegister}
+                            sx={{
+                                backgroundColor: '#fff',
+                                color: '#000',
+                                fontWeight: 'bold',
+                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                px: { xs: 3, sm: 4 },
+                                py: { xs: 1.5, sm: 1.5 },
+                                minWidth: { xs: '250px', sm: '220px' },
+                                borderRadius: '30px',
+                                boxShadow: '0 4px 15px rgba(255, 255, 255, 0.3)',
+                                '&:hover': {
+                                    backgroundColor: '#f0f0f0',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 6px 20px rgba(255, 255, 255, 0.4)',
+                                },
+                            }}
+                        >
+                            Premium Üyelik - 10€/ay
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={handleLogin}
                             sx={{
                                 color: '#fff',
-                                fontWeight: 600,
-                                mb: 3,
-                                fontSize: {
-                                    lg: '2.5rem',
-                                    xl: '3rem',
-                                    xxl: '3.5rem'
-                                }
+                                borderColor: '#fff',
+                                fontWeight: 'bold',
+                                fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                                px: { xs: 3, sm: 4 },
+                                py: { xs: 1.5, sm: 1.5 },
+                                minWidth: { xs: '250px', sm: '200px' },
+                                borderRadius: '30px',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    borderColor: '#fff',
+                                    transform: 'translateY(-2px)',
+                                },
                             }}
                         >
-                            Tüm İçeriklere Erişin
-                        </Typography>
-                        <Typography
-                            variant="h6"
-                            sx={{
-                                color: '#ccc',
-                                mb: 4,
-                                lineHeight: 1.6,
-                                maxWidth: { lg: '700px', xl: '900px', xxl: '1100px' },
-                                mx: 'auto',
-                                fontSize: {
-                                    lg: '1.1rem',
-                                    xl: '1.3rem',
-                                    xxl: '1.5rem'
-                                }
-                            }}
-                        >
-                            Sınırsız müzik, playlist oluşturma, offline dinleme ve daha fazlası için premium üyelik alın
-                        </Typography>
-                        <Box>
-                            <RegisterButton onClick={handleRegister}>
-                                Premium Üyelik - 10€/ay
-                            </RegisterButton>
-                            <LoginButton onClick={handleLogin}>
-                                Zaten Üye misiniz?
-                            </LoginButton>
-                        </Box>
-                    </Box>
-                </CtaSection>
-            </>
-        );
-    };
-
-    console.log('FreePage render - allLoaded:', allLoaded);
+                            Zaten Üye misiniz?
+                        </Button>
+                    </Stack>
+                </ResponsiveContainer>
+            </Box>
+        </>
+    );
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#000', color: '#fff', display: 'flex', flexDirection: 'column' }}>
+        <Box
+            sx={{
+                minHeight: '100vh',
+                bgcolor: '#000',
+                color: '#fff',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                overflow: 'hidden'
+            }}
+        >
             {/* Navigation */}
-            <MainNavbar position="static" elevation={0}>
-                <Box sx={{ width: '100%', px: { lg: 3, xl: 4, xxl: 5 } }}>
-                    <Toolbar sx={{
-                        justifyContent: 'space-between',
-                        py: 1,
-                        minHeight: { lg: '70px', xl: '80px' },
-                        maxWidth: { lg: '1400px', xl: '1600px', xxl: 'none' },
-                        mx: 'auto',
-                        width: '100%'
-                    }}>
+            <AppBar position="static" elevation={0}>
+                <ResponsiveContainer>
+                    <Toolbar
+                        sx={{
+                            justifyContent: 'space-between',
+                            py: 1,
+                            minHeight: { xs: '56px', sm: '64px', md: '70px' },
+                            px: '0 !important',
+                        }}
+                    >
                         {/* Logo */}
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Box
-                                component="img"
-                                src="/assets/your_logo.png"
-                                alt="Logo"
+                            <Typography
+                                variant="h5"
                                 sx={{
-                                    height: { lg: 40, xl: 50 },
-                                    maxWidth: { lg: 160, xl: 200 },
-                                    objectFit: 'contain',
-                                    mr: 3
+                                    fontWeight: 'bold',
+                                    color: '#fff',
+                                    fontSize: { xs: '1.2rem', sm: '1.4rem', md: '1.5rem' }
                                 }}
-                            />
+                            >
+                                TrackBang
+                            </Typography>
                         </Box>
 
-                        {/* Navigation Links */}
-                        <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
-                            <NavButton startIcon={<HomeIcon />}>
-                                Ana Sayfa
-                            </NavButton>
-                            <NavButton startIcon={<LibraryMusicIcon />}>
-                                Müzik
-                            </NavButton>
-                            <NavButton startIcon={<PersonIcon />}>
-                                Hakkımızda
-                            </NavButton>
-                        </Box>
+                        {/* Navigation Links - Hidden on mobile */}
+                        {!isMobile && (
+                            <Box sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                flex: 1,
+                                justifyContent: 'center'
+                            }}>
+                                <Button
+                                    startIcon={<HomeIcon />}
+                                    sx={{
+                                        color: '#fff',
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                        fontWeight: 500,
+                                        mx: 1,
+                                        borderRadius: '8px',
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        },
+                                    }}
+                                >
+                                    Ana Sayfa
+                                </Button>
+                                <Button
+                                    startIcon={<LibraryMusicIcon />}
+                                    sx={{
+                                        color: '#fff',
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                        fontWeight: 500,
+                                        mx: 1,
+                                        borderRadius: '8px',
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        },
+                                    }}
+                                >
+                                    Müzik
+                                </Button>
+                                <Button
+                                    startIcon={<PersonIcon />}
+                                    sx={{
+                                        color: '#fff',
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                        fontWeight: 500,
+                                        mx: 1,
+                                        borderRadius: '8px',
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        },
+                                    }}
+                                >
+                                    Hakkımızda
+                                </Button>
+                            </Box>
+                        )}
 
                         {/* Auth Buttons */}
-                        <Box sx={{ display: 'flex', gap: { lg: 2, xl: 3 } }}>
+                        <Stack direction="row" spacing={1} alignItems="center">
                             <Button
                                 variant="outlined"
                                 onClick={handleLogin}
                                 sx={{
                                     color: '#fff',
                                     borderColor: '#fff',
-                                    textTransform: 'none',
-                                    padding: { lg: '8px 20px', xl: '10px 24px' },
-                                    fontSize: { lg: '0.9rem', xl: '1rem' },
+                                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                                    px: { xs: 2, sm: 2.5 },
+                                    py: { xs: 0.5, sm: 1 },
+                                    minWidth: { xs: '70px', sm: '90px' },
+                                    borderRadius: '20px',
                                     '&:hover': {
                                         borderColor: '#fff',
                                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
                                     },
                                 }}
                             >
-                                Giriş Yap
+                                Giriş
                             </Button>
                             <Button
                                 variant="contained"
@@ -476,144 +606,149 @@ const FreePage = () => {
                                 sx={{
                                     backgroundColor: '#fff',
                                     color: '#000',
-                                    textTransform: 'none',
-                                    fontWeight: 'bold',
-                                    padding: { lg: '8px 20px', xl: '10px 24px' },
-                                    fontSize: { lg: '0.9rem', xl: '1rem' },
+                                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                                    px: { xs: 2, sm: 2.5 },
+                                    py: { xs: 0.5, sm: 1 },
+                                    minWidth: { xs: '70px', sm: '90px' },
+                                    borderRadius: '20px',
                                     '&:hover': {
                                         backgroundColor: '#f0f0f0',
                                     },
                                 }}
                             >
-                                Kayıt Ol
+                                Kayıt
                             </Button>
-                        </Box>
+                        </Stack>
                     </Toolbar>
-                </Box>
-            </MainNavbar>
+                </ResponsiveContainer>
+            </AppBar>
 
             {/* Main Content */}
-            <Box sx={{ flex: 1 }}>
+            <Box sx={{ flex: 1, width: '100%' }}>
                 {allLoaded ? <LoadedContent /> : <LoadingContent />}
             </Box>
 
             {/* Footer */}
-            <Footer>
-                <Box sx={{
+            <Box
+                sx={{
+                    backgroundColor: '#000',
+                    borderTop: '1px solid #333',
+                    py: { xs: 4, sm: 5 },
                     width: '100%',
-                    px: { lg: 3, xl: 4, xxl: 6 },
-                    maxWidth: { lg: '1400px', xl: '1600px', xxl: 'none' },
-                    mx: 'auto'
-                }}>
-                    <Grid container spacing={4}>
-                        <Grid item xs={12} lg={4}>
-                            <Typography variant="h6" sx={{
-                                color: '#fff',
-                                mb: 2,
-                                fontWeight: 600,
-                                fontSize: { lg: '1.1rem', xl: '1.25rem', xxl: '1.4rem' }
-                            }}>
+                }}
+            >
+                <ResponsiveContainer>
+                    <Grid container spacing={{ xs: 3, sm: 4 }}>
+                        <Grid item xs={12} md={4}>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    color: '#fff',
+                                    mb: 2,
+                                    fontWeight: 600,
+                                    fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
+                                }}
+                            >
                                 TrackBang
                             </Typography>
-                            <Typography variant="body2" sx={{
-                                color: '#ccc',
-                                lineHeight: 1.6,
-                                fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' }
-                            }}>
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    color: '#ccc',
+                                    lineHeight: 1.6,
+                                    fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' }
+                                }}
+                            >
                                 En iyi müzik deneyimini sunuyoruz. Premium üyelikle sınırsız müzik keyfini yaşayın.
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} lg={4}>
-                            <Typography variant="h6" sx={{
-                                color: '#fff',
-                                mb: 2,
-                                fontWeight: 600,
-                                fontSize: { lg: '1.1rem', xl: '1.25rem', xxl: '1.4rem' }
-                            }}>
+                        <Grid item xs={12} md={4}>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    color: '#fff',
+                                    mb: 2,
+                                    fontWeight: 600,
+                                    fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
+                                }}
+                            >
                                 Linkler
                             </Typography>
                             <Stack spacing={1}>
-                                <Typography variant="body2" sx={{
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' },
-                                    '&:hover': { color: '#fff' }
-                                }}>
-                                    Ana Sayfa
-                                </Typography>
-                                <Typography variant="body2" sx={{
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' },
-                                    '&:hover': { color: '#fff' }
-                                }}>
-                                    Müzik Kütüphanesi
-                                </Typography>
-                                <Typography variant="body2" sx={{
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' },
-                                    '&:hover': { color: '#fff' }
-                                }}>
-                                    Premium
-                                </Typography>
-                                <Typography variant="body2" sx={{
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' },
-                                    '&:hover': { color: '#fff' }
-                                }}>
-                                    İletişim
-                                </Typography>
+                                {['Ana Sayfa', 'Müzik Kütüphanesi', 'Premium', 'İletişim'].map((link) => (
+                                    <Typography
+                                        key={link}
+                                        variant="body2"
+                                        sx={{
+                                            color: '#ccc',
+                                            cursor: 'pointer',
+                                            fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
+                                            transition: 'color 0.2s ease',
+                                            '&:hover': {
+                                                color: '#fff',
+                                                transform: 'translateX(4px)'
+                                            }
+                                        }}
+                                    >
+                                        {link}
+                                    </Typography>
+                                ))}
                             </Stack>
                         </Grid>
-                        <Grid item xs={12} lg={4}>
-                            <Typography variant="h6" sx={{
-                                color: '#fff',
-                                mb: 2,
-                                fontWeight: 600,
-                                fontSize: { lg: '1.1rem', xl: '1.25rem', xxl: '1.4rem' }
-                            }}>
+                        <Grid item xs={12} md={4}>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    color: '#fff',
+                                    mb: 2,
+                                    fontWeight: 600,
+                                    fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
+                                }}
+                            >
                                 Destek
                             </Typography>
                             <Stack spacing={1}>
-                                <Typography variant="body2" sx={{
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' },
-                                    '&:hover': { color: '#fff' }
-                                }}>
-                                    Yardım Merkezi
-                                </Typography>
-                                <Typography variant="body2" sx={{
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' },
-                                    '&:hover': { color: '#fff' }
-                                }}>
-                                    Gizlilik Politikası
-                                </Typography>
-                                <Typography variant="body2" sx={{
-                                    color: '#ccc',
-                                    cursor: 'pointer',
-                                    fontSize: { lg: '0.9rem', xl: '1rem', xxl: '1.1rem' },
-                                    '&:hover': { color: '#fff' }
-                                }}>
-                                    Kullanım Koşulları
-                                </Typography>
+                                {['Yardım Merkezi', 'Gizlilik Politikası', 'Kullanım Koşulları'].map((link) => (
+                                    <Typography
+                                        key={link}
+                                        variant="body2"
+                                        sx={{
+                                            color: '#ccc',
+                                            cursor: 'pointer',
+                                            fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
+                                            transition: 'color 0.2s ease',
+                                            '&:hover': {
+                                                color: '#fff',
+                                                transform: 'translateX(4px)'
+                                            }
+                                        }}
+                                    >
+                                        {link}
+                                    </Typography>
+                                ))}
                             </Stack>
                         </Grid>
                     </Grid>
-                    <Box sx={{ borderTop: '1px solid #333', mt: 4, pt: 3, textAlign: 'center' }}>
-                        <Typography variant="body2" sx={{
-                            color: '#666',
-                            fontSize: { lg: '0.85rem', xl: '0.9rem', xxl: '1rem' }
-                        }}>
+                    <Box
+                        sx={{
+                            borderTop: '1px solid #333',
+                            mt: { xs: 3, sm: 4 },
+                            pt: { xs: 2, sm: 3 },
+                            textAlign: 'center'
+                        }}
+                    >
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                color: '#666',
+                                fontSize: { xs: '0.75rem', sm: '0.85rem', md: '0.9rem' }
+                            }}
+                        >
                             © 2025 TrackBang. Tüm hakları saklıdır.
                         </Typography>
                     </Box>
-                </Box>
-            </Footer>
+                </ResponsiveContainer>
+            </Box>
         </Box>
     );
 };
